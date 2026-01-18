@@ -42,7 +42,58 @@
     "dark": "Тъмна"
   },
   "history": {
-    "comingSoon": "Функцията за история предстои скоро!",
-    "noHistory": "Все още няма история на спестяванията."
+    "title": "История",
+    "noHistory": "Все още няма история на спестяванията.",
+    "noEntries": "Не са намерени записи в историята.",
+    "total": "Общо",
+    "delete": "Изтрий",
+    "entryTypes": {
+      "snapshot": "Автоматичен запис",
+      "manual": "Ръчно въведен запис"
+    },
+    "filters": {
+      "dateFrom": "Дата от",
+      "dateTo": "Дата до",
+      "search": "Търсене",
+      "searchPlaceholder": "Търсене в историята...",
+      "entryTypes": "Типове записи"
+    },
+    "statistics": {
+      "title": "Статистика",
+      "totalSaved": "Общо спестени",
+      "averageDaily": "Дневно средно",
+      "bestDay": "Най-добър ден",
+      "currentStreak": "Текуща поредица",
+      "longestStreak": "Най-дълга поредица"
+    },
+    "goals": {
+      "title": "Цели",
+      "noGoals": "Все още няма цели",
+      "create": "Създай цел",
+      "target": "Целева сума",
+      "deadline": "Краен срок",
+      "noDeadline": "Без краен срок",
+      "progress": "Напредък",
+      "remaining": "Оставащо",
+      "daysRemaining": "Оставащи дни",
+      "delete": "Изтрий"
+    },
+    "manualEntry": {
+      "title": "Добави ръчен запис",
+      "amount": "Сума (EUR)",
+      "description": "Описание",
+      "untitled": "Без заглавие"
+    },
+    "export": {
+      "title": "Експортиране на история",
+      "download": "Изтегли",
+      "format": "Формат",
+      "includeFilters": "Включи текущи филтри",
+      "csv": "CSV",
+      "json": "JSON"
+    }
+  },
+  "common": {
+    "cancel": "Отмени"
   }
 }

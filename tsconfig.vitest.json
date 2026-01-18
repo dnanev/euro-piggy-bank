@@ -3,8 +3,7 @@
   "exclude": [],
   "compilerOptions": {
     "composite": true,
-    "lib": [],
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src/**/__tests__/**/*", "src/test/**/*"]
+  "include": ["src/**/__tests__/**/*", "src/test/**/*", "src/**/*", "types/**/*"]
 }

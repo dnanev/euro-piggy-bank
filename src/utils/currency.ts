@@ -20,7 +20,8 @@ export const formatBGN = (bgn: number, language: string = 'en'): string => {
 };
 
 export const convertEurToBgn = (cents: number): number => {
-  return (cents / 100) * EUR_TO_BGN_RATE;
+  const euros = cents / 100; // Convert cents to euros first
+  return euros * EUR_TO_BGN_RATE;
 };
 
 export const calculateTotal = (denominations: Array<{ quantity: number; value: number }>): number => {

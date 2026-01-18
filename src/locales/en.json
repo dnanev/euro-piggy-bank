@@ -42,7 +42,58 @@
     "dark": "Dark"
   },
   "history": {
-    "comingSoon": "History feature coming soon!",
-    "noHistory": "No savings history yet."
+    "title": "History",
+    "noHistory": "No savings history yet.",
+    "noEntries": "No history entries found.",
+    "total": "Total",
+    "delete": "Delete",
+    "entryTypes": {
+      "snapshot": "Automatic snapshot",
+      "manual": "Manual entry"
+    },
+    "filters": {
+      "dateFrom": "Date from",
+      "dateTo": "Date to",
+      "search": "Search",
+      "searchPlaceholder": "Search history...",
+      "entryTypes": "Entry types"
+    },
+    "statistics": {
+      "title": "Statistics",
+      "totalSaved": "Total Saved",
+      "averageDaily": "Daily Average",
+      "bestDay": "Best Day",
+      "currentStreak": "Current Streak",
+      "longestStreak": "Longest Streak"
+    },
+    "goals": {
+      "title": "Goals",
+      "noGoals": "No goals yet",
+      "create": "Create Goal",
+      "target": "Target",
+      "deadline": "Deadline",
+      "noDeadline": "No deadline",
+      "progress": "Progress",
+      "remaining": "Remaining",
+      "daysRemaining": "Days remaining",
+      "delete": "Delete"
+    },
+    "manualEntry": {
+      "title": "Add Manual Entry",
+      "amount": "Amount (EUR)",
+      "description": "Description",
+      "untitled": "Untitled"
+    },
+    "export": {
+      "title": "Export History",
+      "download": "Download",
+      "format": "Format",
+      "includeFilters": "Include current filters",
+      "csv": "CSV",
+      "json": "JSON"
+    }
+  },
+  "common": {
+    "cancel": "Cancel"
   }
 }

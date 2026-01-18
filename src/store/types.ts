@@ -1,3 +1,9 @@
+import type { EURO_DENOMINATIONS } from './constants';
+import type { HistoryEntry, SavingsGoal, HistoryStatistics, HistoryFilters, HistoryExportOptions } from '@/types/history';
+
+export type { EURO_DENOMINATIONS };
+export type { HistoryEntry, SavingsGoal, HistoryStatistics, HistoryFilters, HistoryExportOptions };
+
 export interface EuroDenomination {
   id: string;
   label: string;
@@ -12,6 +18,9 @@ export interface AppState {
   language: 'bg' | 'en';
   showBgn: boolean;
   lastUpdated: string | null;
+  history: HistoryEntry[];
+  goals: SavingsGoal[];
+  statistics: HistoryStatistics | null;
 }
 
 export interface AppActions {
@@ -22,4 +31,19 @@ export interface AppActions {
   resetAll: () => void;
   saveState: () => void;
   loadState: () => void;
+
+  // History actions
+  addHistoryEntry: (entry: HistoryEntry) => void;
+  updateHistoryEntry: (id: string, entry: HistoryEntry) => void;
+  deleteHistoryEntry: (id: string) => void;
+  clearHistory: () => void;
+
+  // Goal actions
+  addGoal: (goal: SavingsGoal) => void;
+  updateGoal: (id: string, goal: Partial<SavingsGoal>) => void;
+  deleteGoal: (id: string) => void;
+  clearGoals: () => void;
+
+  // Statistics actions
+  updateStatistics: (stats: HistoryStatistics) => void;
 }

@@ -1,5 +1,6 @@
 /// <reference types="vitest" />
 import '@testing-library/jest-dom'
+import { vi } from 'vitest';
 
 // Mock matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -8,8 +9,6 @@ Object.defineProperty(window, 'matchMedia', {
     matches: false,
     media: query,
     onchange: null,
-    addListener: vi.fn(), // deprecated
-    removeListener: vi.fn(), // deprecated
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
@@ -17,10 +16,24 @@ Object.defineProperty(window, 'matchMedia', {
 })
 
 // Mock localStorage
-const localStorageMock = {
+const localStorageMock = vi.fn(() => ({
   getItem: vi.fn(),
   setItem: vi.fn(),
   removeItem: vi.fn(),
   clear: vi.fn(),
-}
-vi.stubGlobal('localStorage', localStorageMock)
+  key: vi.fn(),
+  length: vi.fn(),
+}));
+
+// Mock window methods
+Object.defineProperty(window, 'location', {
+  value: {
+    href: 'http://localhost:5173',
+    assign: vi.fn(),
+    reload: vi.fn(),
+  },
+  writable: true,
+});
+
+// Global vi mock
+vi.stubGlobal('localStorage', localStorageMock);
