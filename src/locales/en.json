@@ -1,0 +1,48 @@
+{
+  "app": {
+    "title": "Euro Piggy Bank",
+    "subtitle": "Track your physical savings"
+  },
+  "denominations": {
+    "title": "Denominations",
+    "quantity": "Quantity",
+    "total": "Total",
+    "coin": "Coin",
+    "banknote": "Banknote"
+  },
+  "totals": {
+    "title": "Grand Total",
+    "totalEur": "Total in Euros",
+    "totalBgn": "Total in BGN",
+    "showBgn": "Show in BGN",
+    "hideBgn": "Hide BGN",
+    "coinsCount": "Coins count",
+    "banknotesCount": "Banknotes count",
+    "mostSaved": "Most saved",
+    "top3": "Top 3 denominations",
+    "lastUpdated": "Last updated"
+  },
+  "actions": {
+    "save": "Save",
+    "reset": "Reset",
+    "cancel": "Cancel",
+    "confirmReset": "Are you sure you want to reset all data?",
+    "increment": "Increment",
+    "decrement": "Decrement"
+  },
+  "tabs": {
+    "breakdown": "Breakdown",
+    "history": "History",
+    "settings": "Settings"
+  },
+  "settings": {
+    "language": "Language",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "history": {
+    "comingSoon": "History feature coming soon!",
+    "noHistory": "No savings history yet."
+  }
+}

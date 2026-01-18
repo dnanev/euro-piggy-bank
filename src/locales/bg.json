@@ -1,0 +1,48 @@
+{
+  "app": {
+    "title": "Европейска Прасенца Банка",
+    "subtitle": "Проследяване на вашите физически спестявания"
+  },
+  "denominations": {
+    "title": "Номинали",
+    "quantity": "Количество",
+    "total": "Общо",
+    "coin": "Монета",
+    "banknote": "Банкнота"
+  },
+  "totals": {
+    "title": "Обща сума",
+    "totalEur": "Общо в евро",
+    "totalBgn": "Общо в BGN",
+    "showBgn": "Покажи в BGN",
+    "hideBgn": "Скрий BGN",
+    "coinsCount": "Брой монети",
+    "banknotesCount": "Брой банкноти",
+    "mostSaved": "Най-много спестени",
+    "top3": "Топ 3 номинала",
+    "lastUpdated": "Последно обновяване"
+  },
+  "actions": {
+    "save": "Запази",
+    "reset": "Нулирай",
+    "cancel": "Отмени",
+    "confirmReset": "Сигурни ли сте, че искате да нулирате всички данни?",
+    "increment": "Увеличи",
+    "decrement": "Намали"
+  },
+  "tabs": {
+    "breakdown": "Разбивка",
+    "history": "История",
+    "settings": "Настройки"
+  },
+  "settings": {
+    "language": "Език",
+    "theme": "Тема",
+    "light": "Светла",
+    "dark": "Тъмна"
+  },
+  "history": {
+    "comingSoon": "Функцията за история предстои скоро!",
+    "noHistory": "Все още няма история на спестяванията."
+  }
+}
