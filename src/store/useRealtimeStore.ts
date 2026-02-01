@@ -79,8 +79,8 @@ export const useRealtimeStore = create<RealtimeStore>((set, get) => ({
   dataLoaded: false,
 
   denominations: EURO_DENOMINATIONS,
-  theme: 'light',
-  language: 'bg',
+  theme: 'light' as const,
+  language: 'bg' as const,
   showBgn: false,
   lastUpdated: null,
   history: [],
@@ -89,7 +89,7 @@ export const useRealtimeStore = create<RealtimeStore>((set, get) => ({
 
   isListening: false,
   listeners: [],
-  syncStatus: 'idle',
+  syncStatus: 'idle' as const,
   lastSyncTime: null,
   errorMessage: null,
 
@@ -188,11 +188,13 @@ export const useRealtimeStore = create<RealtimeStore>((set, get) => ({
     // Listen to user profile changes
     const profileUnsubscribe = firestoreService.onUserProfileChange(userId, (profile) => {
       if (profile) {
+        const currentState = get()
         set({
           user: profile,
-          theme: profile.preferences.theme,
-          language: profile.preferences.language || 'en',
-          showBgn: profile.preferences.currency === 'BGN'
+          // Only update theme if it's different from current state to avoid loops
+          theme: profile.preferences.theme !== currentState.theme ? profile.preferences.theme : currentState.theme,
+          language: profile.preferences.language !== currentState.language ? (profile.preferences.language || 'en') : currentState.language,
+          showBgn: profile.preferences.currency === 'BGN' !== currentState.showBgn ? profile.preferences.currency === 'BGN' : currentState.showBgn
         })
       }
     })
