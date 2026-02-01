@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { DenominationRow } from './DenominationRow';
-import { useAppStore } from '@/store/useAppStore';
+import { useAppStoreFirebase } from '@/store/useAppStoreFirebase';
 
 export function DenominationList() {
   const { t } = useTranslation();
-  const { denominations, language, setQuantity } = useAppStore();
+  const { denominations, language, showBgn, setQuantity } = useAppStoreFirebase();
 
   // Separate coins and banknotes
   const coins = denominations.filter(d => d.type === 'coin');
@@ -22,6 +22,7 @@ export function DenominationList() {
               denomination={denomination}
               onQuantityChange={setQuantity}
               language={language}
+              showBgn={showBgn}
             />
           ))}
         </div>
@@ -36,6 +37,7 @@ export function DenominationList() {
                 denomination={denomination}
                 onQuantityChange={setQuantity}
                 language={language}
+                showBgn={showBgn}
               />
             ))}
           </div>

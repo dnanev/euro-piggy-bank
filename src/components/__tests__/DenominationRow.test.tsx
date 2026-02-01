@@ -46,6 +46,7 @@ describe('DenominationRow', () => {
         denomination={mockDenomination}
         onQuantityChange={mockOnQuantityChange}
         language="en"
+        showBgn={false}
       />
     );
 
@@ -58,6 +59,7 @@ describe('DenominationRow', () => {
         denomination={mockDenomination}
         onQuantityChange={mockOnQuantityChange}
         language="en"
+        showBgn={false}
       />
     );
 
@@ -73,6 +75,7 @@ describe('DenominationRow', () => {
         denomination={denominationWithQuantity}
         onQuantityChange={mockOnQuantityChange}
         language="en"
+        showBgn={false}
       />
     );
 
@@ -87,6 +90,7 @@ describe('DenominationRow', () => {
         denomination={mockDenomination}
         onQuantityChange={mockOnQuantityChange}
         language="en"
+        showBgn={false}
       />
     );
 
@@ -105,6 +109,7 @@ describe('DenominationRow', () => {
         denomination={denominationWithQuantity}
         onQuantityChange={mockOnQuantityChange}
         language="en"
+        showBgn={false}
       />
     );
 
@@ -120,6 +125,7 @@ describe('DenominationRow', () => {
         denomination={mockDenomination}
         onQuantityChange={mockOnQuantityChange}
         language="en"
+        showBgn={false}
       />
     );
 
@@ -133,6 +139,7 @@ describe('DenominationRow', () => {
         denomination={mockDenomination}
         onQuantityChange={mockOnQuantityChange}
         language="en"
+        showBgn={false}
       />
     );
 
@@ -151,6 +158,7 @@ describe('DenominationRow', () => {
         denomination={mockDenomination}
         onQuantityChange={mockOnQuantityChange}
         language="en"
+        showBgn={false}
       />
     );
 
@@ -169,6 +177,7 @@ describe('DenominationRow', () => {
         denomination={mockDenomination}
         onQuantityChange={mockOnQuantityChange}
         language="en"
+        showBgn={false}
       />
     );
 
@@ -193,6 +202,7 @@ describe('DenominationRow', () => {
         denomination={mockDenomination}
         onQuantityChange={mockOnQuantityChange}
         language="en"
+        showBgn={false}
       />
     );
 

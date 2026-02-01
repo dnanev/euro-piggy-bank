@@ -1,62 +1,95 @@
 # history-tracking Specification
 
 ## Purpose
-TBD - created by archiving change history-tracking. Update Purpose after archive.
+Comprehensive history tracking with manual entries, goals management, statistics, and data export functionality.
 ## Requirements
-### Requirement: Historical Data Storage
-The system SHALL provide persistent storage of savings history with automatic timestamp tracking.
+### Requirement: Manual History Entries
+The system SHALL allow users to create manual history entries with custom amounts and descriptions.
 
-#### Scenario: User saves current state
-**WHEN** user changes any denomination quantity in the app
-**THEN** the system SHALL automatically create a history entry capturing:
-- Current total savings in EUR and BGN
-- Complete denomination breakdown at that moment
-- Timestamp of the change
-- Type of entry (automatic snapshot)
+#### Scenario: User creates manual entry
+- **WHEN** user clicks "Add Manual Entry" button
+- **THEN** prompts for title, amount, and description
+- **AND** entry is saved with current timestamp
+- **AND** entry appears in history timeline
+- **AND** statistics are recalculated
 
-#### Scenario: User views history timeline
-**WHEN** user navigates to the history tab
-**THEN** the system SHALL display:
-- Chronological list of all history entries
-- Visual timeline with dates and totals
-- Filtering options by date range and entry type
-- Pagination for efficient navigation through long histories
+#### Scenario: User deletes manual entry
+- **WHEN** user clicks delete button on manual entry
+- **THEN** entry is removed from history
+- **AND** statistics are updated
+- **AND** Firebase is updated
 
-#### Scenario: User sets savings goal
-**WHEN** user creates a new savings goal
-**THEN** the system SHALL:
-- Store goal with target amount, currency, and deadline
-- Calculate and display progress percentage
-- Show estimated completion date based on current saving rate
-- Send notifications when goal is achieved
+### Requirement: Savings Goals Management
+The system SHALL provide comprehensive goals tracking with progress calculation.
+
+#### Scenario: User creates savings goal
+- **WHEN** user creates new goal through manual entry
+- **THEN** goal is stored with target amount and deadline
+- **AND** progress percentage is calculated
+- **AND** remaining amount is displayed
+- **AND** days remaining are calculated
+
+#### Scenario: Goal progress tracking
+- **WHEN** user views goals section
+- **THEN** current progress is shown for each goal
+- **AND** remaining amount is calculated
+- **AND** deadline countdown is displayed
+- **AND** goals can be deleted
+
+### Requirement: History Statistics and Insights
+The system SHALL provide comprehensive statistics based on history data.
+
+#### Scenario: View statistics summary
+- **WHEN** user accesses history tab
+- **THEN** total saved amount is displayed
+- **AND** average daily savings are calculated
+- **AND** best saving day is identified
+- **AND** current saving streak is tracked
+
+#### Scenario: Statistics calculation
+- **WHEN** history data changes
+- **THEN** all statistics are recalculated
+- **AND** streak tracking is updated
+- **AND** trends are analyzed
+
+### Requirement: History Data Export
+The system SHALL provide export functionality for history data in multiple formats.
 
 #### Scenario: User exports history data
-**WHEN** user requests data export
-**THEN** the system SHALL provide:
-- Export in CSV format with proper headers
-- Export in JSON format for data portability
-- Include option to export filtered date ranges
-- Maintain data privacy with no external server transmission
+- **WHEN** user clicks export button
+- **THEN** export dialog appears with format options
+- **AND** CSV format is available with proper headers
+- **AND** JSON format is available for data portability
+- **AND** date range filtering is supported
+- **AND** file is downloaded locally
 
-### Requirement: Trend Analysis and Visualization
-The system SHALL provide visual analysis of savings patterns over time.
+#### Scenario: Export options configuration
+- **WHEN** user configures export settings
+- **THEN** format selection is available (CSV/JSON)
+- **AND** date range can be specified
+- **AND** include filters option is available
+- **AND** export is processed client-side only
 
-#### Scenario: User views savings trends
-**WHEN** user accesses the trends section
-**THEN** the system SHALL display:
-- Line chart showing total savings over time
-- Bar chart comparing savings by month
-- Pie chart showing denomination distribution
-- Statistics including average daily savings, best/worst saving days
-- Streak tracking for consistent saving behavior
+### Requirement: History Filtering and Search
+The system SHALL provide comprehensive filtering and search capabilities.
 
-#### Scenario: User compares time periods
-**WHEN** user selects two date ranges to compare
-**THEN** the system SHALL:
-- Display side-by-side comparison of the two periods
-- Show percentage change between periods
-- Highlight differences in savings patterns
-- Provide insights on saving behavior changes
+#### Scenario: User filters by date range
+- **WHEN** user sets start and end dates
+- **THEN** history list shows only entries in range
+- **AND** statistics are recalculated for filtered data
+- **AND** export respects date filters
+
+#### Scenario: User searches history
+- **WHEN** user enters search query
+- **THEN** entries matching query are displayed
+- **AND** search matches titles and descriptions
+- **AND** results update in real-time
+
+#### Scenario: User filters by entry type
+- **WHEN** user selects entry types (snapshot/manual)
+- **THEN** only selected entry types are displayed
+- **AND** filter state is maintained
+- **AND** multiple types can be selected
 
 ### Requirement: Data Management and Privacy
 The system SHALL ensure user data privacy and efficient management.

@@ -3,21 +3,27 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Save, RotateCcw } from 'lucide-react';
 import { formatEuro, formatBGN, convertEurToBgn, getSavingsInsights } from '@/utils/currency';
-import { useAppStore } from '@/store/useAppStore';
+import { useAppStoreFirebase } from '@/store/useAppStoreFirebase';
 import { ConfirmDialog } from './ConfirmDialog';
 import { useState } from 'react';
 
 export function GrandTotalCard() {
   const { t } = useTranslation();
-  const { denominations, language, showBgn, saveState, resetAll } = useAppStore();
+  const { denominations, language, showBgn, setQuantity, lastUpdated } = useAppStoreFirebase();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   const totalCents = denominations.reduce((total, denom) => total + (denom.quantity * denom.value), 0);
   const totalBgn = convertEurToBgn(totalCents);
   const insights = getSavingsInsights(denominations);
 
-  const handleSave = () => {
-    saveState();
+  const handleSave = async () => {
+    // Save is now automatic with Firebase, but we can trigger a sync
+    try {
+      // The setQuantity function already handles saving to Firebase
+      // We just need to update the sync status
+    } catch (error) {
+      console.error('Save error:', error);
+    }
   };
 
   const handleReset = () => {
@@ -25,7 +31,10 @@ export function GrandTotalCard() {
   };
 
   const handleConfirmReset = () => {
-    resetAll();
+    // Reset all quantities to 0
+    denominations.forEach(denom => {
+      setQuantity(denom.id, 0);
+    });
     setShowConfirmDialog(false);
   };
 
@@ -98,9 +107,9 @@ export function GrandTotalCard() {
           )}
 
           {/* Last Updated */}
-          {formatDate(useAppStore.getState().lastUpdated) && (
+          {formatDate(lastUpdated) && (
             <div className="text-center text-sm text-muted-foreground">
-              {t('totals.lastUpdated')}: {formatDate(useAppStore.getState().lastUpdated)}
+              {t('totals.lastUpdated')}: {formatDate(lastUpdated)}
             </div>
           )}
 

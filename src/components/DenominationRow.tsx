@@ -5,17 +5,16 @@ import { Button } from '@/components/ui/button';
 import { Minus, Plus } from 'lucide-react';
 import type { EuroDenomination } from '@/store/types';
 import { formatEuro, formatBGN, convertEurToBgn } from '@/utils/currency';
-import { useAppStore } from '@/store/useAppStore';
 
 interface DenominationRowProps {
   denomination: EuroDenomination;
   onQuantityChange: (id: string, quantity: number) => void;
   language: string;
+  showBgn: boolean;
 }
 
-export function DenominationRow({ denomination, onQuantityChange, language }: DenominationRowProps) {
+export function DenominationRow({ denomination, onQuantityChange, language, showBgn }: DenominationRowProps) {
   const { t } = useTranslation();
-  const { showBgn } = useAppStore();
   const totalValue = denomination.quantity * denomination.value;
 
   const handleIncrement = () => {
@@ -53,6 +52,7 @@ export function DenominationRow({ denomination, onQuantityChange, language }: De
               disabled={denomination.quantity === 0}
               aria-label={t('actions.decrement')}
               className="rounded-r-none border-r-0 h-9 w-9 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900"
+              style={{ pointerEvents: denomination.quantity === 0 ? 'none' : 'auto' }}
             >
               <Minus className="h-4 w-4" />
             </Button>
@@ -72,6 +72,7 @@ export function DenominationRow({ denomination, onQuantityChange, language }: De
               onClick={handleIncrement}
               aria-label={t('actions.increment')}
               className="rounded-l-none border-l-0 h-9 w-9 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900"
+              style={{ pointerEvents: 'auto' }}
             >
               <Plus className="h-4 w-4" />
             </Button>

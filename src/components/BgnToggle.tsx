@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { useAppStore } from '@/store/useAppStore';
+import { useAppStoreFirebase } from '@/store/useAppStoreFirebase';
 
 export function BgnToggle() {
   const { t } = useTranslation();
-  const { showBgn, setShowBgn } = useAppStore();
+  const { showBgn, setShowBgn } = useAppStoreFirebase();
 
   const handleToggleChange = (checked: boolean) => {
     setShowBgn(checked);
