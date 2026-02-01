@@ -1,7 +1,7 @@
 # i18n-support Specification
 
 ## Purpose
-TBD - created by archiving change add-main-app. Update Purpose after archive.
+Comprehensive internationalization support for Bulgarian and English languages with proper formatting and localization.
 ## Requirements
 ### Requirement: Bulgarian Language Support
 The system SHALL provide full Bulgarian language support as the primary language.
@@ -33,31 +33,37 @@ The system SHALL provide English language support as secondary language.
 - **AND** follow English number formatting rules
 - **AND** decimal separator is period (.)
 
-### Requirement: Language Toggle
-The system SHALL provide a toggle to switch between Bulgarian and English languages.
+### Requirement: Language Toggle Component
+The system SHALL provide a dedicated language toggle component.
 
-#### Scenario: Switch to Bulgarian
-- **WHEN** user selects Bulgarian language
-- **THEN** interface immediately switches to Bulgarian
-- **AND** language preference is saved to LocalStorage
-- **AND** all components update text content
+#### Scenario: Language toggle interface
+- **WHEN** user views language toggle
+- **THEN** Bulgarian (БГ) and English (EN) options are displayed
+- **AND** current language is highlighted
+- **AND** toggle is accessible and keyboard navigable
+- **AND** language changes apply immediately
 
-#### Scenario: Switch to English
-- **WHEN** user selects English language
-- **THEN** interface immediately switches to English
-- **AND** language preference is saved to LocalStorage
-- **AND** all components update text content
-
-### Requirement: Language Persistence
-The system SHALL remember user's language preference across sessions.
-
-#### Scenario: Save language preference
+#### Scenario: Language preference persistence
 - **WHEN** user switches languages
-- **THEN** preference is saved to LocalStorage
-- **AND** persists across browser sessions
+- **THEN** preference is saved to Firebase
+- **AND** preference syncs across devices
+- **AND** preference is restored on app load
+- **AND** fallback to browser language if no preference
 
-#### Scenario: Restore language on load
+### Requirement: Language Persistence and Sync
+The system SHALL remember user's language preference across sessions and devices.
+
+#### Scenario: Cross-device language sync
+- **WHEN** user changes language on one device
+- **THEN** preference is saved to Firebase
+- **AND** other devices update language automatically
+- **AND** real-time sync is maintained
+- **AND** conflict resolution handles simultaneous changes
+
+#### Scenario: Language preference restoration
 - **WHEN** user returns to application
 - **THEN** previously selected language is applied
 - **AND** language toggle shows correct state
+- **AND** Firebase preference is loaded
+- **AND** fallback to browser language if needed
 

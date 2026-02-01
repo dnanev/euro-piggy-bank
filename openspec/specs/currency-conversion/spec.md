@@ -1,7 +1,7 @@
 # currency-conversion Specification
 
 ## Purpose
-TBD - created by archiving change add-main-app. Update Purpose after archive.
+Real-time currency conversion between Euro and Bulgarian Leva with persistent display preferences and Firebase sync.
 ## Requirements
 ### Requirement: EUR/BGN Conversion
 The system SHALL convert Euro amounts to Bulgarian Leva using the hardcoded rate of 1.95583.
@@ -16,18 +16,22 @@ The system SHALL convert Euro amounts to Bulgarian Leva using the hardcoded rate
 - **THEN** BGN amount updates immediately
 - **AND** maintains precision to 2 decimal places
 
-### Requirement: Currency Display Toggle
-The system SHALL provide a toggle to show/hide Bulgarian Leva conversion.
+### Requirement: BGN Toggle Component
+The system SHALL provide a dedicated Bulgarian Leva display toggle component.
 
-#### Scenario: Toggle BGN display visibility
-- **WHEN** user enables BGN display toggle in settings
-- **THEN** BGN equivalent amounts are shown throughout the interface
-- **AND** toggle state is persisted across sessions
+#### Scenario: BGN toggle interface
+- **WHEN** user views BGN toggle
+- **THEN** toggle shows current BGN display state
+- **AND** toggle is accessible and keyboard navigable
+- **AND** changes apply immediately to all currency displays
+- **AND** preference is saved to Firebase
 
-#### Scenario: Hide BGN display
-- **WHEN** user disables BGN display toggle in settings
-- **THEN** BGN amounts are hidden from the interface
-- **AND** only Euro amounts are displayed
+#### Scenario: BGN display state persistence
+- **WHEN** user toggles BGN display
+- **THEN** preference is saved to Firebase
+- **AND** preference syncs across devices
+- **AND** preference is restored on app load
+- **AND** affects all currency displays immediately
 
 #### Scenario: BGN toggle affects all Euro displays
 - **WHEN** BGN display is enabled

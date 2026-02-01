@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Globe } from 'lucide-react';
-import { useAppStore } from '@/store/useAppStore';
+import { useAppStoreFirebase } from '@/store/useAppStoreFirebase';
 
 export function LanguageToggle() {
   const { i18n } = useTranslation();
-  const { language, setLanguage } = useAppStore();
+  const { language, setLanguage } = useAppStoreFirebase();
 
   const handleLanguageChange = (newLanguage: 'bg' | 'en') => {
     setLanguage(newLanguage);

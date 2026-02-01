@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useAppStore } from '@/store/useAppStore';
+import { useAppStoreFirebase } from '@/store/useAppStoreFirebase';
 import type { HistoryFilters, HistoryExportOptions } from '@/store/types';
 import {
   calculateHistoryStatistics,
@@ -22,7 +22,7 @@ export function HistoryTab() {
     addHistoryEntry,
     deleteHistoryEntry,
     deleteGoal
-  } = useAppStore();
+  } = useAppStoreFirebase();
 
   const [filters, setFilters] = useState<HistoryFilters>({
     dateRange: { start: null, end: null },

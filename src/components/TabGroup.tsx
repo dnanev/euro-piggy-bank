@@ -1,25 +1,22 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DenominationList } from './DenominationList';
 import { HistoryTab } from './HistoryTab';
 import { SettingsTab } from './SettingsTab';
+import { useTabContext } from '../contexts/TabContext';
 
 export function TabGroup() {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState('breakdown');
+  const { activeTab, setActiveTab } = useTabContext();
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-      <TabsList className="grid w-full grid-cols-3">
+      <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="breakdown">
           {t('tabs.breakdown')}
         </TabsTrigger>
         <TabsTrigger value="history">
           {t('tabs.history')}
-        </TabsTrigger>
-        <TabsTrigger value="settings">
-          {t('tabs.settings')}
         </TabsTrigger>
       </TabsList>
 

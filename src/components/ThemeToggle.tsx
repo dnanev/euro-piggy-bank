@@ -2,11 +2,11 @@ import { useTranslation } from 'react-i18next';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Moon, Sun } from 'lucide-react';
-import { useAppStore } from '@/store/useAppStore';
+import { useAppStoreFirebase } from '@/store/useAppStoreFirebase';
 
 export function ThemeToggle() {
   const { t } = useTranslation();
-  const { theme, setTheme } = useAppStore();
+  const { theme, setTheme } = useAppStoreFirebase();
 
   const handleThemeChange = (checked: boolean) => {
     setTheme(checked ? 'dark' : 'light');
