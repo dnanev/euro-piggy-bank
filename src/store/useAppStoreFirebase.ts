@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useRealtimeStore } from './useRealtimeStore'
 import { useAuth } from '../contexts/authUtils'
 
@@ -25,6 +25,19 @@ export const useAppStoreFirebase = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth.user, auth.isAuthenticated, realtimeStore.dataLoaded])
 
+  // Memoize actions to prevent infinite re-renders
+  const setQuantity = useCallback((id: string, quantity: number) =>
+    realtimeStore.setQuantity(id, quantity, auth.user?.uid || ''), [realtimeStore.setQuantity, auth.user?.uid]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const setTheme = useCallback((theme: 'light' | 'dark') =>
+    realtimeStore.setTheme(theme, auth.user?.uid || ''), [realtimeStore.setTheme, auth.user?.uid]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const setLanguage = useCallback((language: 'bg' | 'en') =>
+    realtimeStore.setLanguage(language, auth.user?.uid || ''), [realtimeStore.setLanguage, auth.user?.uid]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const setShowBgn = useCallback((showBgn: boolean) =>
+    realtimeStore.setShowBgn(showBgn, auth.user?.uid || ''), [realtimeStore.setShowBgn, auth.user?.uid]) // eslint-disable-line react-hooks/exhaustive-deps
+
   return {
     // Auth state
     user: auth.user,
@@ -47,11 +60,11 @@ export const useAppStoreFirebase = () => {
     lastSyncTime: realtimeStore.lastSyncTime,
     errorMessage: realtimeStore.errorMessage,
 
-    // Actions
-    setQuantity: (id: string, quantity: number) => realtimeStore.setQuantity(id, quantity, auth.user?.uid || ''),
-    setTheme: (theme: 'light' | 'dark') => realtimeStore.setTheme(theme, auth.user?.uid || ''),
-    setLanguage: (language: 'bg' | 'en') => realtimeStore.setLanguage(language, auth.user?.uid || ''),
-    setShowBgn: (showBgn: boolean) => realtimeStore.setShowBgn(showBgn, auth.user?.uid || ''),
+    // Memoized actions
+    setQuantity,
+    setTheme,
+    setLanguage,
+    setShowBgn,
     addHistoryEntry: realtimeStore.addHistoryEntry,
     updateHistoryEntry: realtimeStore.updateHistoryEntry,
     deleteHistoryEntry: realtimeStore.deleteHistoryEntry,
