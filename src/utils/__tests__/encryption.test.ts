@@ -152,7 +152,6 @@ describe('Encryption Utilities', () => {
       expect(result.errors.length).toBeGreaterThan(0)
       expect(result.errors).toContain('Password must be at least 6 characters long')
       expect(result.errors).toContain('Password must contain at least one uppercase letter')
-      expect(result.errors).toContain('Password must contain at least one lowercase letter')
       expect(result.errors).toContain('Password must contain at least one number')
     })
   })

@@ -1,16 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { HistoryTab } from '../HistoryTab';
 import { vi } from 'vitest';
+import { useAppStoreFirebase } from '@/store/useAppStoreFirebase';
 
 // Mock the store
-const mockUseAppStoreFirebase = vi.fn();
-vi.mock('@/store/useAppStoreFirebase', () => ({
-  useAppStoreFirebase: mockUseAppStoreFirebase,
-}));
+vi.mock('@/store/useAppStoreFirebase');
 
 // Default mock implementation
-mockUseAppStoreFirebase.mockReturnValue({
+(useAppStoreFirebase as any).mockReturnValue({
   history: [
     {
       id: '1',
@@ -142,7 +141,7 @@ describe('HistoryTab', () => {
   it('calls addHistoryEntry when manual entry is created', async () => {
     const user = userEvent.setup();
     const mockAddHistoryEntry = vi.fn();
-    mockUseAppStoreFirebase.mockReturnValue({
+    (useAppStoreFirebase as any).mockReturnValue({
       history: [],
       goals: [],
       language: 'en',
@@ -174,7 +173,7 @@ describe('HistoryTab', () => {
     const user = userEvent.setup();
     const mockDeleteHistoryEntry = vi.fn();
 
-    mockUseAppStoreFirebase.mockReturnValue({
+    (useAppStoreFirebase as any).mockReturnValue({
       history: [
         {
           id: '1',
@@ -205,7 +204,7 @@ describe('HistoryTab', () => {
     const user = userEvent.setup();
     const mockDeleteGoal = vi.fn();
 
-    mockUseAppStoreFirebase.mockReturnValue({
+    (useAppStoreFirebase as any).mockReturnValue({
       history: [],
       goals: [
         {
@@ -232,7 +231,7 @@ describe('HistoryTab', () => {
   });
 
   it('displays no entries message when history is empty', () => {
-    mockUseAppStoreFirebase.mockReturnValue({
+    (useAppStoreFirebase as any).mockReturnValue({
       history: [],
       goals: [],
       language: 'en',
@@ -248,7 +247,7 @@ describe('HistoryTab', () => {
   });
 
   it('displays no goals message when goals are empty', () => {
-    mockUseAppStoreFirebase.mockReturnValue({
+    (useAppStoreFirebase as any).mockReturnValue({
       history: [],
       goals: [],
       language: 'en',

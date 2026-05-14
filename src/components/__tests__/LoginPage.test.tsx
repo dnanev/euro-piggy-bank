@@ -1,13 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { LoginPage } from '../Auth/LoginPage';
 import { vi } from 'vitest';
+import { useAuth } from '@/contexts/AuthContext';
+import { signInWithGoogle } from '@/firebase/auth';
 
 // Mock the auth context
-const mockUseAuth = vi.fn();
-vi.mock('@/contexts/AuthContext', () => ({
-  useAuth: mockUseAuth,
-}));
+vi.mock('@/contexts/AuthContext');
 
 // Mock i18n
 vi.mock('react-i18next', () => ({
@@ -27,7 +27,7 @@ describe('LoginPage', () => {
   });
 
   it('renders login page correctly', () => {
-    mockUseAuth.mockReturnValue({
+    (useAuth as any).mockReturnValue({
       user: null,
       isAuthenticated: false,
       loading: false,
@@ -36,14 +36,14 @@ describe('LoginPage', () => {
     });
 
     render(<LoginPage />);
-    
-    expect(screen.getByText('auth.signIn.title')).toBeInTheDocument();
-    expect(screen.getByText('auth.signIn.description')).toBeInTheDocument();
-    expect(screen.getByText('auth.signIn.googleButton')).toBeInTheDocument();
+
+    expect(screen.getByText('Euro Piggy Bank')).toBeInTheDocument();
+    expect(screen.getByText('Track your savings across all your devices')).toBeInTheDocument();
+    expect(screen.getByText('Continue with Google')).toBeInTheDocument();
   });
 
-  it('shows loading state when authentication is loading', () => {
-    mockUseAuth.mockReturnValue({
+  it('renders login page when auth context is loading', () => {
+    (useAuth as any).mockReturnValue({
       user: null,
       isAuthenticated: false,
       loading: true,
@@ -52,47 +52,57 @@ describe('LoginPage', () => {
     });
 
     render(<LoginPage />);
-    
-    expect(screen.getByText('auth.loading')).toBeInTheDocument();
+
+    expect(screen.getByText('Sign In')).toBeInTheDocument();
   });
 
-  it('calls signIn when Google sign-in button is clicked', async () => {
+  it('calls signInWithGoogle when the Google button is clicked', async () => {
     const user = userEvent.setup();
-    const mockSignIn = vi.fn();
-    
-    mockUseAuth.mockReturnValue({
-      user: null,
-      isAuthenticated: false,
-      loading: false,
-      signIn: mockSignIn,
-      signOut: vi.fn(),
-    });
+    const mockSignInWithGoogle = vi.mocked(signInWithGoogle);
 
-    render(<LoginPage />);
-    
-    const signInButton = screen.getByText('auth.signIn.googleButton');
-    await user.click(signInButton);
-    
-    expect(mockSignIn).toHaveBeenCalled();
-  });
-
-  it('displays error message when authentication fails', () => {
-    mockUseAuth.mockReturnValue({
+    (useAuth as any).mockReturnValue({
       user: null,
       isAuthenticated: false,
       loading: false,
       signIn: vi.fn(),
       signOut: vi.fn(),
-      error: 'Authentication failed',
     });
 
     render(<LoginPage />);
-    
-    expect(screen.getByText('Authentication failed')).toBeInTheDocument();
+
+    const signInButton = screen.getByText('Continue with Google');
+    await user.click(signInButton);
+
+    expect(mockSignInWithGoogle).toHaveBeenCalled();
   });
 
-  it('shows app content when user is authenticated', () => {
-    mockUseAuth.mockReturnValue({
+  it('displays error message when Google authentication fails', async () => {
+    const user = userEvent.setup();
+    const errorMessage = 'Authentication failed';
+
+    (useAuth as any).mockReturnValue({
+      user: null,
+      isAuthenticated: false,
+      loading: false,
+      signIn: vi.fn(),
+      signOut: vi.fn(),
+    });
+    vi.mocked(signInWithGoogle).mockRejectedValueOnce(new Error(errorMessage));
+
+    render(<LoginPage />);
+
+    const signInButton = screen.getByText('Continue with Google');
+    await user.click(signInButton);
+
+    expect(await screen.findByText(errorMessage)).toBeInTheDocument();
+  });
+
+  it('redirects when user is authenticated', () => {
+    const originalLocation = window.location;
+    delete (window as any).location;
+    ;(window as any).location = { href: '' };
+
+    (useAuth as any).mockReturnValue({
       user: {
         uid: '123',
         email: 'test@example.com',
@@ -106,8 +116,12 @@ describe('LoginPage', () => {
     });
 
     render(<LoginPage />);
-    
-    // Should redirect to main app content, not show login form
-    expect(screen.queryByText('auth.signIn.title')).not.toBeInTheDocument();
+
+    expect(window.location.href).toBe('/');
+
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: originalLocation,
+    });
   });
 });

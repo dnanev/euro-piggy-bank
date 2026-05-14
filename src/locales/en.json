@@ -26,6 +26,7 @@
     "save": "Save",
     "reset": "Reset",
     "cancel": "Cancel",
+    "clearAll": "Clear All",
     "confirmReset": "Are you sure you want to reset all data?",
     "increment": "Increment",
     "decrement": "Decrement"

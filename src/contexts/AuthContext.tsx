@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import {
@@ -9,7 +10,7 @@ import { auth } from '../firebase/config'
 import { getUserProfile, createUserProfile } from '../firebase/auth'
 import type { UserProfile } from '../firebase/auth'
 
-interface AuthContextType {
+export interface AuthContextType {
   user: FirebaseUser | null
   userProfile: UserProfile | null
   loading: boolean

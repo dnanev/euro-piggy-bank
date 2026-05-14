@@ -160,7 +160,7 @@ export const generateMigrationSummary = (localStorageData: LocalStorageData) => 
       ...(stats.totalDenominations > 0 ? ['Denominations'] : []),
       ...(stats.historyEntries > 0 ? ['History Entries'] : []),
       ...(stats.goals > 0 ? ['Savings Goals'] : []),
-      ['User Preferences']
+      'User Preferences'
     ],
     totalItems: stats.totalDenominations + stats.historyEntries + stats.goals + 1,
     estimatedSize: JSON.stringify(localStorageData).length,

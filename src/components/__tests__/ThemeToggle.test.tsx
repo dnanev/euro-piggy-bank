@@ -1,13 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeToggle } from '../ThemeToggle';
 import { vi } from 'vitest';
+import { useAppStoreFirebase } from '@/store/useAppStoreFirebase';
 
 // Mock the store
-const mockUseAppStoreFirebase = vi.fn();
-vi.mock('@/store/useAppStoreFirebase', () => ({
-  useAppStoreFirebase: mockUseAppStoreFirebase,
-}));
+vi.mock('@/store/useAppStoreFirebase');
 
 // Mock i18n
 vi.mock('react-i18next', () => ({
@@ -21,87 +20,89 @@ describe('ThemeToggle', () => {
     vi.clearAllMocks();
   });
 
-  it('renders theme toggle button', () => {
-    mockUseAppStoreFirebase.mockReturnValue({
+  const getThemeSwitch = () =>
+    screen.getByRole('switch', { name: /settings\.(light|dark)/i });
+
+  it('renders theme toggle switch', () => {
+    (useAppStoreFirebase as any).mockReturnValue({
       theme: 'light',
       setTheme: vi.fn(),
     });
 
     render(<ThemeToggle />);
-    
-    const button = screen.getByRole('button', { name: /theme/i });
-    expect(button).toBeInTheDocument();
+
+    const toggle = getThemeSwitch();
+    expect(toggle).toBeInTheDocument();
   });
 
   it('shows sun icon when theme is light', () => {
-    mockUseAppStoreFirebase.mockReturnValue({
+    (useAppStoreFirebase as any).mockReturnValue({
       theme: 'light',
       setTheme: vi.fn(),
     });
 
     render(<ThemeToggle />);
-    
-    // Should show sun icon for light theme
-    const button = screen.getByRole('button', { name: /theme/i });
-    expect(button).toBeInTheDocument();
+
+    const toggle = getThemeSwitch();
+    expect(toggle).toHaveAttribute('aria-checked', 'false');
   });
 
   it('shows moon icon when theme is dark', () => {
-    mockUseAppStoreFirebase.mockReturnValue({
+    (useAppStoreFirebase as any).mockReturnValue({
       theme: 'dark',
       setTheme: vi.fn(),
     });
 
     render(<ThemeToggle />);
-    
-    // Should show moon icon for dark theme
-    const button = screen.getByRole('button', { name: /theme/i });
-    expect(button).toBeInTheDocument();
+
+    const toggle = getThemeSwitch();
+    expect(toggle).toHaveAttribute('aria-checked', 'true');
   });
 
   it('calls setTheme with "dark" when clicked in light mode', async () => {
     const user = userEvent.setup();
     const mockSetTheme = vi.fn();
-    
-    mockUseAppStoreFirebase.mockReturnValue({
+
+    (useAppStoreFirebase as any).mockReturnValue({
       theme: 'light',
       setTheme: mockSetTheme,
     });
 
     render(<ThemeToggle />);
-    
-    const button = screen.getByRole('button', { name: /theme/i });
-    await user.click(button);
-    
+
+    const toggle = getThemeSwitch();
+    await user.click(toggle);
+
     expect(mockSetTheme).toHaveBeenCalledWith('dark');
   });
 
   it('calls setTheme with "light" when clicked in dark mode', async () => {
     const user = userEvent.setup();
     const mockSetTheme = vi.fn();
-    
-    mockUseAppStoreFirebase.mockReturnValue({
+
+    (useAppStoreFirebase as any).mockReturnValue({
       theme: 'dark',
       setTheme: mockSetTheme,
     });
 
     render(<ThemeToggle />);
-    
-    const button = screen.getByRole('button', { name: /theme/i });
-    await user.click(button);
-    
+
+    const toggle = getThemeSwitch();
+    await user.click(toggle);
+
     expect(mockSetTheme).toHaveBeenCalledWith('light');
   });
 
   it('has proper accessibility attributes', () => {
-    mockUseAppStoreFirebase.mockReturnValue({
+    (useAppStoreFirebase as any).mockReturnValue({
       theme: 'light',
       setTheme: vi.fn(),
     });
 
     render(<ThemeToggle />);
-    
-    const button = screen.getByRole('button', { name: /theme/i });
-    expect(button).toHaveAttribute('aria-label');
+
+    const toggle = getThemeSwitch();
+    expect(toggle).toHaveAttribute('role', 'switch');
+    expect(toggle).toHaveAttribute('aria-checked', 'false');
   });
 });

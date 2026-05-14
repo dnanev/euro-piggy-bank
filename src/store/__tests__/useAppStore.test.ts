@@ -1,10 +1,35 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { act } from '@testing-library/react';
 import { useAppStore } from '../useAppStore';
 import type { HistoryEntry, SavingsGoal } from '../types';
 import { EURO_DENOMINATIONS } from '../constants';
 
+const getStore = () => useAppStore.getState();
+
 describe('useAppStore - History Integration', () => {
+  beforeEach(() => {
+    // Mock localStorage
+    const localStorageMock = {
+      getItem: vi.fn(),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+      clear: vi.fn(),
+    };
+    Object.defineProperty(window, 'localStorage', {
+      value: localStorageMock,
+      writable: true,
+    });
+
+    act(() => {
+      getStore().resetAll();
+    });
+  });
+
+  afterEach(() => {
+    // Clean up
+    vi.clearAllMocks();
+  });
+
   describe('History Management', () => {
     it('should add history entries', () => {
       // Reset store before test
@@ -26,9 +51,10 @@ describe('useAppStore - History Integration', () => {
         store.addHistoryEntry(entry);
       });
 
-      expect(store.history).toHaveLength(1);
-      expect(store.history[0]).toEqual(entry);
-      expect(store.lastUpdated).toBeTruthy();
+      const updatedStore = getStore();
+      expect(updatedStore.history).toHaveLength(1);
+      expect(updatedStore.history[0]).toEqual(entry);
+      expect(updatedStore.lastUpdated).toBeTruthy();
     });
 
     it('should update history entries', () => {
@@ -57,9 +83,10 @@ describe('useAppStore - History Integration', () => {
         store.updateHistoryEntry('test-entry-1', updatedEntry);
       });
 
-      expect(store.history).toHaveLength(1);
-      expect(store.history[0].totalEur).toBe(1500);
-      expect(store.history[0].totalBgn).toBe(2931.60);
+      const updatedStore = getStore();
+      expect(updatedStore.history).toHaveLength(1);
+      expect(updatedStore.history[0].totalEur).toBe(1500);
+      expect(updatedStore.history[0].totalBgn).toBe(2931.60);
     });
 
     it('should delete history entries', () => {
@@ -88,14 +115,15 @@ describe('useAppStore - History Integration', () => {
         store.addHistoryEntry(entry2);
       });
 
-      expect(store.history).toHaveLength(2);
+      expect(getStore().history).toHaveLength(2);
 
       act(() => {
         store.deleteHistoryEntry('test-entry-1');
       });
 
-      expect(store.history).toHaveLength(1);
-      expect(store.history[0].id).toBe('test-entry-2');
+      const updatedStore = getStore();
+      expect(updatedStore.history).toHaveLength(1);
+      expect(updatedStore.history[0].id).toBe('test-entry-2');
     });
 
     it('should clear all history', () => {
@@ -114,30 +142,31 @@ describe('useAppStore - History Integration', () => {
         store.addHistoryEntry(entry);
       });
 
-      expect(store.history).toHaveLength(1);
+      expect(getStore().history).toHaveLength(1);
 
       act(() => {
         store.clearHistory();
       });
 
-      expect(store.history).toHaveLength(0);
+      expect(getStore().history).toHaveLength(0);
     });
 
     it('should create automatic history entry when denomination quantity changes', () => {
       const store = useAppStore.getState();
 
-      expect(store.history).toHaveLength(0);
+      expect(getStore().history).toHaveLength(0);
 
       act(() => {
-        store.setQuantity('1-cent', 5);
+        store.setQuantity('1c', 5);
       });
 
-      expect(store.history).toHaveLength(1);
-      expect(store.history[0].type).toBe('snapshot');
-      expect(store.history[0].totalEur).toBe(5); // 5 * 1 cent
-      expect(store.history[0].denominations).toEqual(
+      const updatedStore = getStore();
+      expect(updatedStore.history).toHaveLength(1);
+      expect(updatedStore.history[0].type).toBe('snapshot');
+      expect(updatedStore.history[0].totalEur).toBe(5); // 5 * 1 cent
+      expect(updatedStore.history[0].denominations).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({ id: '1-cent', quantity: 5 })
+          expect.objectContaining({ id: '1c', quantity: 5 })
         ])
       );
     });
@@ -146,33 +175,33 @@ describe('useAppStore - History Integration', () => {
       const store = useAppStore.getState();
 
       act(() => {
-        store.setQuantity('1-cent', 5);
+        store.setQuantity('1c', 5);
       });
 
-      expect(store.history).toHaveLength(1);
+      expect(getStore().history).toHaveLength(1);
 
       act(() => {
-        store.setQuantity('1-cent', 0);
+        store.setQuantity('1c', 0);
       });
 
       // Should still have only the first entry, no new one for setting to 0
-      expect(store.history).toHaveLength(1);
+      expect(getStore().history).toHaveLength(1);
     });
 
     it('should not create history entry when quantity does not change', () => {
       const store = useAppStore.getState();
 
       act(() => {
-        store.setQuantity('1-cent', 5);
+        store.setQuantity('1c', 5);
       });
 
-      expect(store.history).toHaveLength(1);
+      expect(getStore().history).toHaveLength(1);
 
       act(() => {
-        store.setQuantity('1-cent', 5); // Same quantity
+        store.setQuantity('1c', 5); // Same quantity
       });
 
-      expect(store.history).toHaveLength(1); // No new entry
+      expect(getStore().history).toHaveLength(1); // No new entry
     });
   });
 
@@ -198,9 +227,10 @@ describe('useAppStore - History Integration', () => {
         store.addGoal(goal);
       });
 
-      expect(store.goals).toHaveLength(1);
-      expect(store.goals[0]).toEqual(goal);
-      expect(store.lastUpdated).toBeTruthy();
+      const updatedStore = getStore();
+      expect(updatedStore.goals).toHaveLength(1);
+      expect(updatedStore.goals[0]).toEqual(goal);
+      expect(updatedStore.lastUpdated).toBeTruthy();
     });
 
     it('should update goals', () => {
@@ -224,10 +254,11 @@ describe('useAppStore - History Integration', () => {
         store.updateGoal('goal-1', { title: 'Updated Emergency Fund', targetAmount: 15000 });
       });
 
-      expect(store.goals).toHaveLength(1);
-      expect(store.goals[0].title).toBe('Updated Emergency Fund');
-      expect(store.goals[0].targetAmount).toBe(15000);
-      expect(store.goals[0].id).toBe('goal-1'); // ID should not change
+      const updatedStore = getStore();
+      expect(updatedStore.goals).toHaveLength(1);
+      expect(updatedStore.goals[0].title).toBe('Updated Emergency Fund');
+      expect(updatedStore.goals[0].targetAmount).toBe(15000);
+      expect(updatedStore.goals[0].id).toBe('goal-1'); // ID should not change
     });
 
     it('should delete goals', () => {
@@ -258,14 +289,15 @@ describe('useAppStore - History Integration', () => {
         store.addGoal(goal2);
       });
 
-      expect(store.goals).toHaveLength(2);
+      expect(getStore().goals).toHaveLength(2);
 
       act(() => {
         store.deleteGoal('goal-1');
       });
 
-      expect(store.goals).toHaveLength(1);
-      expect(store.goals[0].id).toBe('goal-2');
+      const updatedStore = getStore();
+      expect(updatedStore.goals).toHaveLength(1);
+      expect(updatedStore.goals[0].id).toBe('goal-2');
     });
 
     it('should clear all goals', () => {
@@ -285,13 +317,13 @@ describe('useAppStore - History Integration', () => {
         store.addGoal(goal);
       });
 
-      expect(store.goals).toHaveLength(1);
+      expect(getStore().goals).toHaveLength(1);
 
       act(() => {
         store.clearGoals();
       });
 
-      expect(store.goals).toHaveLength(0);
+      expect(getStore().goals).toHaveLength(0);
     });
   });
 
@@ -333,8 +365,9 @@ describe('useAppStore - History Integration', () => {
         store.updateStatistics(stats);
       });
 
-      expect(store.statistics).toEqual(stats);
-      expect(store.lastUpdated).toBeTruthy();
+      const updatedStore = getStore();
+      expect(updatedStore.statistics).toEqual(stats);
+      expect(updatedStore.lastUpdated).toBeTruthy();
     });
   });
 
@@ -433,21 +466,23 @@ describe('useAppStore - History Integration', () => {
         store.updateStatistics(stats);
       });
 
-      expect(store.history).toHaveLength(1);
-      expect(store.goals).toHaveLength(1);
-      expect(store.statistics).toEqual(stats);
+      const populatedStore = getStore();
+      expect(populatedStore.history).toHaveLength(1);
+      expect(populatedStore.goals).toHaveLength(1);
+      expect(populatedStore.statistics).toEqual(stats);
 
       act(() => {
-        store.resetAll();
+        populatedStore.resetAll();
       });
 
-      expect(store.history).toHaveLength(0);
-      expect(store.goals).toHaveLength(0);
-      expect(store.statistics).toBeNull();
-      expect(store.denominations).toEqual(EURO_DENOMINATIONS);
-      expect(store.theme).toBe('light');
-      expect(store.language).toBe('bg');
-      expect(store.showBgn).toBe(false);
+      const resetStore = getStore();
+      expect(resetStore.history).toHaveLength(0);
+      expect(resetStore.goals).toHaveLength(0);
+      expect(resetStore.statistics).toBeNull();
+      expect(resetStore.denominations).toEqual(EURO_DENOMINATIONS);
+      expect(resetStore.theme).toBe('light');
+      expect(resetStore.language).toBe('bg');
+      expect(resetStore.showBgn).toBe(false);
     });
   });
 });

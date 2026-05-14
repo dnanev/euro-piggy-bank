@@ -47,16 +47,25 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <AppHeader />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50 to-cyan-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-foreground transition-colors duration-500">
+      {/* Animated background elements */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-emerald-500/5 to-transparent dark:from-emerald-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-cyan-500/5 to-transparent dark:from-cyan-500/10 rounded-full blur-3xl"></div>
+      </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="space-y-8">
-          {/* Main Content */}
-          <main className="space-y-8">
-            <GrandTotalCard />
-            <TabGroup />
-          </main>
+      {/* Content */}
+      <div className="relative z-10">
+        <AppHeader />
+
+        <div className="container mx-auto px-4 py-8 md:py-16 max-w-6xl">
+          <div className="space-y-8 md:space-y-16">
+            {/* Main Content */}
+            <main className="space-y-8 md:space-y-12">
+              <GrandTotalCard />
+              <TabGroup />
+            </main>
+          </div>
         </div>
       </div>
     </div>

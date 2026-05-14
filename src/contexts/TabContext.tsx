@@ -1,7 +1,8 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useState } from 'react'
 import type { ReactNode } from 'react'
 
-interface TabContextType {
+export interface TabContextType {
   activeTab: string
   setActiveTab: (tab: string) => void
 }

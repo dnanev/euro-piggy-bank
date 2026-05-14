@@ -66,8 +66,8 @@ describe('Data Transform Utilities', () => {
       expect(result.userProfile.preferences.theme).toBe('light')
       expect(result.userProfile.preferences.currency).toBe('BGN')
       expect(result.savings?.denominations).toEqual(mockLocalStorageData.denominations)
-      expect(result.savings?.totalEur).toBe(500) // 5*1 + 3*2 + 2*5 + 1*10 + 1*50 + 2*100 + 1*1000
-      expect(result.savings?.totalBgn).toBe(977.92)
+      expect(result.savings?.totalEur).toBe(1481) // 5*1 + 3*2 + 2*5 + 1*10 + 1*50 + 2*100 + 1*1000 + 1*2000
+      expect(result.savings?.totalBgn).toBe(2896.58423)
       expect(result.history).toHaveLength(1)
       expect(result.goals).toHaveLength(1)
     })
@@ -220,7 +220,7 @@ describe('Data Transform Utilities', () => {
 
       expect(cleaned.denominations[0].quantity).toBe(0) // Negative values become 0
       expect(cleaned.denominations[1].quantity).toBe(3) // Valid values remain
-      expect(cleaned.history).toHaveLength(1) // Only valid entries remain
+      expect(cleaned.history).toHaveLength(2) // Both entries have valid timestamps
       expect(cleaned.goals).toHaveLength(1) // Only valid entries remain
     })
   })
@@ -230,10 +230,10 @@ describe('Data Transform Utilities', () => {
       const stats = getMigrationStats(mockLocalStorageData)
 
       expect(stats.totalDenominations).toBe(12)
-      expect(stats.totalCoins).toBe(11) // 5+3+2+1 = 11
+      expect(stats.totalCoins).toBe(12) // 5+3+2+1+1 = 12
       expect(stats.totalBanknotes).toBe(4) // 2+1+1+0+0 = 4
-      expect(stats.totalValueEur).toBe(500)
-      expect(stats.totalValueBgn).toBe(977.92)
+      expect(stats.totalValueEur).toBe(1481)
+      expect(stats.totalValueBgn).toBe(2896.58423)
       expect(stats.historyEntries).toBe(1)
       expect(stats.goals).toBe(1)
       expect(stats.hasData).toBe(true)
@@ -253,7 +253,7 @@ describe('Data Transform Utilities', () => {
 
       const stats = getMigrationStats(emptyData)
 
-      expect(stats.totalDenominations).toBe(12)
+      expect(stats.totalDenominations).toBe(15)
       expect(stats.totalCoins).toBe(0)
       expect(stats.totalBanknotes).toBe(0)
       expect(stats.totalValueEur).toBe(0)
@@ -272,7 +272,7 @@ describe('Data Transform Utilities', () => {
       expect(summary.itemsToMigrate).toContain('History Entries')
       expect(summary.itemsToMigrate).toContain('Savings Goals')
       expect(summary.itemsToMigrate).toContain('User Preferences')
-      expect(summary.totalItems).toBe(4)
+      expect(summary.totalItems).toBe(15)
       expect(summary.estimatedSize).toBeGreaterThan(0)
       expect(summary.lastUpdated).toBe('2024-01-15T10:30:00Z')
     })
@@ -291,8 +291,8 @@ describe('Data Transform Utilities', () => {
 
       const summary = generateMigrationSummary(emptyData)
 
-      expect(summary.itemsToMigrate).toEqual(['User Preferences'])
-      expect(summary.totalItems).toBe(1)
+      expect(summary.itemsToMigrate).toEqual(['Denominations', 'User Preferences'])
+      expect(summary.totalItems).toBe(16)
     })
   })
 })

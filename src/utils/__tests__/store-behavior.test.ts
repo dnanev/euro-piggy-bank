@@ -1,14 +1,31 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { act } from '@testing-library/react';
 import { useAppStore } from '@/store/useAppStore';
 
 describe('Store History Behavior Debug', () => {
   beforeEach(() => {
+    // Mock localStorage
+    const localStorageMock = {
+      getItem: vi.fn(),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+      clear: vi.fn(),
+    };
+    Object.defineProperty(window, 'localStorage', {
+      value: localStorageMock,
+      writable: true,
+    });
+
     // Reset store before each test
     const store = useAppStore.getState();
     act(() => {
       store.resetAll();
     });
+  });
+
+  afterEach(() => {
+    // Clean up
+    vi.clearAllMocks();
   });
 
   it('should create correct history entry when incrementing 2 euros', () => {

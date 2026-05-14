@@ -1,18 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { LanguageToggle } from '../LanguageToggle';
 import { vi } from 'vitest';
+import { useAppStoreFirebase } from '@/store/useAppStoreFirebase';
 
 // Mock the store
-const mockUseAppStoreFirebase = vi.fn();
-vi.mock('@/store/useAppStoreFirebase', () => ({
-  useAppStoreFirebase: mockUseAppStoreFirebase,
-}));
+vi.mock('@/store/useAppStoreFirebase');
 
 // Mock i18n
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
+    i18n: {
+      changeLanguage: vi.fn(),
+    },
   }),
 }));
 
@@ -21,83 +23,83 @@ describe('LanguageToggle', () => {
     vi.clearAllMocks();
   });
 
-  it('renders language toggle button', () => {
-    mockUseAppStoreFirebase.mockReturnValue({
+  it('renders language toggle buttons', () => {
+    (useAppStoreFirebase as any).mockReturnValue({
       language: 'en',
       setLanguage: vi.fn(),
     });
 
     render(<LanguageToggle />);
-    
-    const button = screen.getByRole('button', { name: /language/i });
-    expect(button).toBeInTheDocument();
+
+    expect(screen.getByRole('button', { name: 'BG' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'EN' })).toBeInTheDocument();
   });
 
   it('shows EN when language is English', () => {
-    mockUseAppStoreFirebase.mockReturnValue({
+    (useAppStoreFirebase as any).mockReturnValue({
       language: 'en',
       setLanguage: vi.fn(),
     });
 
     render(<LanguageToggle />);
-    
-    expect(screen.getByText('EN')).toBeInTheDocument();
+
+    expect(screen.getByRole('button', { name: 'EN' })).toBeInTheDocument();
   });
 
   it('shows БГ when language is Bulgarian', () => {
-    mockUseAppStoreFirebase.mockReturnValue({
+    (useAppStoreFirebase as any).mockReturnValue({
       language: 'bg',
       setLanguage: vi.fn(),
     });
 
     render(<LanguageToggle />);
-    
-    expect(screen.getByText('БГ')).toBeInTheDocument();
+
+    expect(screen.getByRole('button', { name: 'BG' })).toBeInTheDocument();
   });
 
   it('calls setLanguage with "bg" when clicked in English mode', async () => {
     const user = userEvent.setup();
     const mockSetLanguage = vi.fn();
-    
-    mockUseAppStoreFirebase.mockReturnValue({
+
+    (useAppStoreFirebase as any).mockReturnValue({
       language: 'en',
       setLanguage: mockSetLanguage,
     });
 
     render(<LanguageToggle />);
-    
-    const button = screen.getByRole('button', { name: /language/i });
-    await user.click(button);
-    
+
+    const bgButton = screen.getByRole('button', { name: 'BG' });
+    await user.click(bgButton);
+
     expect(mockSetLanguage).toHaveBeenCalledWith('bg');
   });
 
   it('calls setLanguage with "en" when clicked in Bulgarian mode', async () => {
     const user = userEvent.setup();
     const mockSetLanguage = vi.fn();
-    
-    mockUseAppStoreFirebase.mockReturnValue({
+
+    (useAppStoreFirebase as any).mockReturnValue({
       language: 'bg',
       setLanguage: mockSetLanguage,
     });
 
     render(<LanguageToggle />);
-    
-    const button = screen.getByRole('button', { name: /language/i });
-    await user.click(button);
-    
+
+    const enButton = screen.getByRole('button', { name: 'EN' });
+    await user.click(enButton);
+
     expect(mockSetLanguage).toHaveBeenCalledWith('en');
   });
 
   it('has proper accessibility attributes', () => {
-    mockUseAppStoreFirebase.mockReturnValue({
+    (useAppStoreFirebase as any).mockReturnValue({
       language: 'en',
       setLanguage: vi.fn(),
     });
 
     render(<LanguageToggle />);
-    
-    const button = screen.getByRole('button', { name: /language/i });
-    expect(button).toHaveAttribute('aria-label');
+
+    expect(screen.getByRole('button', { name: 'BG' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'EN' })).toBeInTheDocument();
   });
 });

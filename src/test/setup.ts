@@ -15,14 +15,14 @@ Object.defineProperty(window, 'matchMedia', {
 })
 
 // Mock localStorage
-const localStorageMock = vi.fn(() => ({
+const localStorageMock = {
   getItem: vi.fn(),
   setItem: vi.fn(),
   removeItem: vi.fn(),
   clear: vi.fn(),
   key: vi.fn(),
-  length: vi.fn(),
-}))
+  length: 0,
+}
 
 // Mock window methods
 Object.defineProperty(window, 'location', {

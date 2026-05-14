@@ -116,7 +116,7 @@ export const decryptEmail = (encryptedEmail: string): string => {
 export const sanitizeInput = (input: string): string => {
   return input
     .trim()
-    .replace(/[<>]/g, '') // Remove potential HTML tags
+    .replace(/<[^>]*>/g, '') // Remove HTML tags
     .replace(/javascript:/gi, '') // Remove potential JS injection
     .substring(0, 1000) // Limit length
 }
